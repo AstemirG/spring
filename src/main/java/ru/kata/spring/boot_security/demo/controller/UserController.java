@@ -1,64 +1,26 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import ru.kata.spring.boot_security.demo.model.User;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.List;
-
-
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-
-    @GetMapping("/admin/create")
-    public String createUserForm(@ModelAttribute("user") User user) {
-        return "create";
-    }
-
-    @PostMapping("/admin/create")
-    public String createUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/";
-    }
-
-    @GetMapping(value = "/user")
-    public String printUsers(ModelMap model) {
-        List<User> users = userService.listUsers();
-        model.addAttribute("users", users);
-        return "index";
-    }
-
-    @GetMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        userService.removeUser(id);
-        return "redirect:/";
-    }
-
-    @GetMapping("/admin/update/{id}")
-    public String updateUserForm(@PathVariable("id") int id, ModelMap model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "update";
-    }
-
-    @PostMapping("/admin/update")
-    public String updateUser(User user) {
-        userService.updateUser(user);
-        return "redirect:/";
+    @GetMapping("/{id}")
+    public String showUserPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user",  userService.findById(id));
+        return "user";
     }
 }
