@@ -16,24 +16,24 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 public class User implements UserDetails {
 
-   @Column
+   @Column(name = "id")
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "name")
    private String name;
 
-   @Column
+   @Column(name = "last_name")
    private String last_name;
 
-   @Column
+   @Column(name = "email")
    private String email;
 
-   @Column
+   @Column(name = "login")
    private String login;
 
-   @Column
+   @Column(name = "password")
    private String password;
 
    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
